@@ -13,12 +13,20 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->unsignedInteger('ID_USUARIO')->nullable();
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+
+                        // Foreign key opcional hacia USUARIO
+            $table->foreign('ID_USUARIO')
+                  ->references('ID_USUARIO')
+                  ->on('USUARIO')
+                  ->onDelete('set null')
+                  ->onUpdate('cascade');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
