@@ -45,7 +45,7 @@ class PermissionController extends Controller
 
     public function edit(Permission $permission)
     {
-        return view('admin.permissions.edit', compact('permission'));
+        return view('roles_permisos.edit_permission', compact('permission'));
     }
 
     // Actualiza un permiso existente.

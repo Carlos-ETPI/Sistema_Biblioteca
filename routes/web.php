@@ -25,7 +25,7 @@ Route::get('/crud', function () {
 });
 
 
-Route::prefix('admin/users')->name('admin.users.')->group(function () {
+Route::prefix('admin/users')->middleware(['auth'])->name('admin.users.')->group(function () {
     Route::get('/', [UserRoleController::class, 'index'])->name('index');
     Route::get('/roles/create', [UserRoleController::class, 'create'])->name('roles.create');
     Route::post('/', [UserRoleController::class, 'store'])->name('roles.store');
@@ -49,6 +49,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     Route::resource('permissions', PermissionController::class)->except(['show']);
     Route::get('permissions/create', [PermissionController::class, 'create'])->name('permissions.create');
     Route::post('permissions', [PermissionController::class, 'store'])->name('permissions.store');
+    Route::get('permissions/{permission}/edit', [PermissionController::class, 'edit'])->name('permissions.edit');
 });
 
 require __DIR__.'/auth.php';

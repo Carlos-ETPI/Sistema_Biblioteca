@@ -35,7 +35,7 @@ class RolPermissionController extends Controller
     $permissions = Permission::whereIn('id', $request->permissions ?? [])->pluck('name');
     $role->syncPermissions($permissions);
 
-    return redirect()->route('admin.permissions.index')->with('success', 'Permisos del rol actualizados correctamente.');
+    return redirect()->route('admin.rol.index')->with('success', 'Permisos del rol actualizados correctamente.');
 }
 
 }

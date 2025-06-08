@@ -5,11 +5,12 @@
     <!-- Sidebar Toggle-->
     <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle"><i class="fas fa-bars"></i></button>
     <!-- Navbar Search-->
-    <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-        <div class="input-group">
-            
-        </div>
-    </form>
+    <div class="ms-auto me-3 text-white d-flex align-items-center">
+        @auth
+            <span class="me-3">{{ Auth::user()->name }}</span>
+        @endauth
+        <span>{{ \Carbon\Carbon::now()->format('d/m/Y') }}</span>
+    </div>
     <!-- Navbar-->
     <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
         <li class="nav-item dropdown">
