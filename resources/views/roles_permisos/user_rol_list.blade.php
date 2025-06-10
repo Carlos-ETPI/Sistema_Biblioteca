@@ -42,7 +42,21 @@
                                         <a href="{{ route('admin.users.edit-roles', $user->id) }}" class="btn btn-sm btn-warning" >
                                             Asignar Roles
                                         </a>
+                                        <form action="{{ route('admin.users.toggle-active', $user->id) }}" method="POST" style="display:inline;">
+        @csrf
+        @method('PATCH')
+        @if($user->active)
+            <button type="submit" class="btn btn-sm btn-danger" title="Desactivar">
+                <i class="fas fa-user-slash"></i> Desactivar
+            </button>
+        @else
+            <button type="submit" class="btn btn-sm btn-success" title="Activar">
+                <i class="fas fa-user-check"></i> Activar
+            </button>
+        @endif
+    </form>
                                     </td>
+
                                 </tr>
                             @endforeach
                         </tbody>

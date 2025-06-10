@@ -14,6 +14,7 @@ Schema::create('USUARIO', function (Blueprint $table) {
     $table->unsignedInteger('ID_ROL');
     $table->date('FECHAREGISTRO_USUARIO');
     $table->integer('ESTADO_USUARIO');
+    $table->timestamps();
 
     $table->foreign(['ID_PERSONA'])
           ->references(['ID_PERSONA'])

@@ -10,6 +10,7 @@ return new class extends Migration {
         Schema::create('TITULOAUTOR', function (Blueprint $table) {
             $table->integer('ID_TITULO');
             $table->integer('ID_AUTOR');
+            $table->timestamps();
 
             $table->primary(['ID_TITULO', 'ID_AUTOR']);
 

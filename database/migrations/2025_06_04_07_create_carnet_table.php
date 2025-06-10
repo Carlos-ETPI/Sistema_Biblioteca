@@ -12,6 +12,7 @@ return new class extends Migration {
             $table->string('CARNET', 50)->unique();
             $table->date('VENCIMIENTO_CARNET');
             $table->date('EXPEDICION_CARNET');
+            $table->timestamps();
         });
     }
 

@@ -13,6 +13,7 @@ return new class extends Migration {
             $table->string('TITULOS_DETALLECONSULTA', 100);
             $table->float('COSTO_DETALLECONSULTA');
             $table->date('FECHA_DETALLECONSULTA');
+            $table->timestamps();
 
             $table->primary(['ID_BIBLIOTECARIO', 'ID_USUARIO']);
 

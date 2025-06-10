@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->integer('ID_IDIOMA');
             $table->string('NOMBRE_TITULO', 50);
             $table->string('ISBN_TITULO', 50);
+            $table->timestamps();
 
             $table->foreign('ID_CATALOGO')
                   ->references('ID_CATALOGO')

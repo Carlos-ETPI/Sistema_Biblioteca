@@ -15,6 +15,7 @@ Schema::create('PRESTA', function (Blueprint $table) {
     $table->integer('ESTADO_PRESTA');
     $table->date('FECHA_PRESTA');
     $table->date('FECHA_DEVO');
+    $table->timestamps();
 
     // Foreign keys
     $table->foreign('ID_EJEMPLAR')->references('ID_EJEMPLAR')->on('EJEMPLAR')->onUpdate('restrict')->onDelete('restrict');

@@ -13,6 +13,7 @@ return new class extends Migration {
             $table->float('MORA_PRESTA');
             $table->integer('ESTADO_CANCELADO');
             $table->float('MONTO_CANCELADO');
+            $table->timestamps();
         });
     }
 

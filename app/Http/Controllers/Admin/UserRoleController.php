@@ -50,4 +50,13 @@ class UserRoleController extends Controller
         return redirect()->route('admin.users.roles.create')
             ->with('success', 'Rol creado correctamente.');
     }
+
+    public function toggleActive($id)
+{
+    $user = \App\Models\User::findOrFail($id);
+    $user->active = !$user->active;
+    $user->save();
+
+    return redirect()->back()->with('success', 'Estado del usuario actualizado.');
+}
 }

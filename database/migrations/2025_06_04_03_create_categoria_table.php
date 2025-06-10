@@ -11,6 +11,7 @@ return new class extends Migration {
             $table->integer('ID_CATEGORIA')->autoIncrement()->primary(); // autoincremental
             $table->string('NOM_CATEGORIA', 50);
             $table->string('DESCRIPCION_CATEGORIA', 150);
+            $table->timestamps();
         });
     }
 

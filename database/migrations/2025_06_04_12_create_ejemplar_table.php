@@ -11,6 +11,7 @@ return new class extends Migration {
             $table->unsignedInteger('ID_EJEMPLAR')->autoIncrement()->primary();
             $table->integer('ID_TITULO');
             $table->integer('ESTADO_EJEMPLAR');
+            $table->timestamps();
 
             $table->foreign('ID_TITULO')
                   ->references('ID_TITULO')

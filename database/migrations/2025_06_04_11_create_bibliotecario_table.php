@@ -12,6 +12,7 @@ return new class extends Migration {
             $table->integer('ID_CATALOGO');
             $table->string('NOMBRE_BIBLIOTECARIO', 50);
             $table->string('APELLIDO_BIBLIOTECARIO', 50);
+            $table->timestamps();
 
             // Foreign key
             $table->foreign('ID_CATALOGO')

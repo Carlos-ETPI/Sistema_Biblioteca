@@ -37,13 +37,36 @@ class LoginRequest extends FormRequest
      *
      * @throws \Illuminate\Validation\ValidationException
      */
+    
     public function authenticate(): void
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
-            RateLimiter::hit($this->throttleKey());
+        $user = \App\Models\User::where('email', $this->email)->first();
 
+        if (! $user) {
+            RateLimiter::hit($this->throttleKey());
+            throw ValidationException::withMessages([
+                'email' => 'Correo o contraseña incorrectos.',
+            ]);
+        }
+
+        if (! $user->active) {
+            // Enviar correo de reactivación si el usuario está inactivo
+            if (empty($user->activation_token)) {
+                $user->activation_token = \Illuminate\Support\Str::random(60);
+                $user->save();
+            }
+            \Mail::to($user->email)->send(new \App\Mail\ReactivationEmail($user));
+
+            RateLimiter::hit($this->throttleKey());
+            throw ValidationException::withMessages([
+                'email' => 'Tu usuario está inactivo. Se ha enviado un correo para reactivar tu cuenta.',
+            ]);
+        }
+
+        if (! \Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+            RateLimiter::hit($this->throttleKey());
             throw ValidationException::withMessages([
                 'email' => trans('auth.failed'),
             ]);
@@ -51,6 +74,8 @@ class LoginRequest extends FormRequest
 
         RateLimiter::clear($this->throttleKey());
     }
+
+
 
     /**
      * Ensure the login request is not rate limited.

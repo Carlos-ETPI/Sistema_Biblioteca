@@ -10,6 +10,7 @@ return new class extends Migration {
         Schema::create('CATALOGO', function (Blueprint $table) {
             $table->integer('ID_CATALOGO')->autoIncrement()->primary(); // autoincremental
             $table->string('BIBLIOTECA_CATALOGO', 50);
+            $table->timestamps();
         });
     }
 

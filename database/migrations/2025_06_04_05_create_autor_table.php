@@ -13,6 +13,7 @@ return new class extends Migration
             $table->string('NOM_AUTOR', 50);
             $table->string('APE_AUTOR', 50);
             $table->string('DESC_AUTOR', 150);
+            $table->timestamps();
         });
     }
 

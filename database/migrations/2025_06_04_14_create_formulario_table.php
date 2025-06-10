@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->unsignedInteger('ID_BIBLIOTECARIO');
             $table->integer('APROBACION_FORMULARIO');
             $table->string('COMENTARIOS', 150)->nullable();
+            $table->timestamps();
 
             $table->foreign('ID_USUARIO')
                   ->references('ID_USUARIO')

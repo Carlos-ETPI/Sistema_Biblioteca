@@ -10,6 +10,7 @@ return new class extends Migration {
         Schema::create('ROL', function (Blueprint $table) {
             $table->unsignedInteger('ID_ROL')->autoIncrement()->primary();
             $table->string('DESC_ROL', 50);
+            $table->timestamps();
         });
     }
 

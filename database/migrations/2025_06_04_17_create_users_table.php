@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+            $table->boolean('active')->default(true);
+            $table->string('activation_token')->nullable()->unique();
 
                         // Foreign key opcional hacia USUARIO
             $table->foreign('ID_USUARIO')

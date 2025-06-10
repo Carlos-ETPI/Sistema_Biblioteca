@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->date('NACIMIENTO_PERSONA');
             $table->string('TELEFONO_PERSONA', 10);
             $table->string('DUI_PERSONA', 10)->unique();
+            $table->timestamps();
 
             $table->primary(['ID_PERSONA', 'DUI_PERSONA']);
         });

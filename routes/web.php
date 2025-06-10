@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\UserRoleController;
 use App\Http\Controllers\Admin\RolPermissionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\ActivationController;
 Route::get('/', function () {
     return view('auth.login');
 });
@@ -25,12 +26,13 @@ Route::get('/crud', function () {
 });
 
 
-Route::prefix('admin/users')->middleware(['auth'])->name('admin.users.')->group(function () {
+Route::prefix('admin/users')->name('admin.users.')->group(function () {
     Route::get('/', [UserRoleController::class, 'index'])->name('index');
     Route::get('/roles/create', [UserRoleController::class, 'create'])->name('roles.create');
     Route::post('/', [UserRoleController::class, 'store'])->name('roles.store');
     Route::get('{user}/edit-roles', [UserRoleController::class, 'edit'])->name('edit-roles');
     Route::put('{user}/update-roles', [UserRoleController::class, 'update'])->name('update-roles');
+    Route::patch('{user}/toggle-active', [UserRoleController::class, 'toggleActive'])->name('toggle-active');
 });
 
 
@@ -38,7 +40,7 @@ Route::prefix('admin/users')->middleware(['auth'])->name('admin.users.')->group(
 //     Route::resource('permissions', RolPermissionController::class)->except(['show']);
     
 // });
-Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {
+Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('rol', RolPermissionController::class)->except(['show']);
     Route::resource('roles', RoleController::class)->except(['show']);
     Route::get('roles/{role}/edit-permissions', [\App\Http\Controllers\Admin\RolPermissionController::class, 'edit'])->name('roles.edit-permissions');
@@ -51,5 +53,6 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     Route::post('permissions', [PermissionController::class, 'store'])->name('permissions.store');
     Route::get('permissions/{permission}/edit', [PermissionController::class, 'edit'])->name('permissions.edit');
 });
+Route::get('/reactivate/{token}', [ActivationController::class, 'reactivate'])->name('user.reactivate');
 
 require __DIR__.'/auth.php';
