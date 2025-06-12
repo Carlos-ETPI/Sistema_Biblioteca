@@ -33,24 +33,30 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-         $request->validate([
+        $request->validate([
         'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
         'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        'dui_persona' => ['required', 'string', 'size:10'],
+        'dui_persona' => ['required', 'string', 'size:10', 'unique:persona,DUI_PERSONA'],
         'nombre_persona' => ['required', 'string', 'max:50'],
         'apellido_persona' => ['required', 'string', 'max:50'],
         'nacimiento_persona' => ['required', 'date'],
         'telefono_persona' => ['required', 'string', 'max:10'],
-        'carnet' => ['required', 'string', 'max:50'],
+        'carnet' => ['required', 'string', 'max:50','unique:carnet,CARNET'],
         'id_rol' => ['required', 'string'],
+        ], 
+        [   'email.unique' => 'El email ingresado ya está registrado en el sistema.',
+            'dui_persona.unique' => 'El DUI ingresado ya está registrado en el sistema.',
+            'carnet.unique' => 'El carnet ingresado ya está registrado en el sistema.',
     ]);
     
 
 
         // 1. Validar rol
-    $rol = Rol::create([
-        'DESC_ROL' => $request->id_rol,
-    ]);   
+    $rol = Rol::where('DESC_ROL', $request->id_rol)->first();
+    if (!$rol) {
+        // Si no existe, lo creas (opcional)
+        $rol = Rol::create(['DESC_ROL' => $request->id_rol]);
+    }   
 
         // 2. Crear persona
     $persona = Persona::create([
@@ -89,8 +95,8 @@ class RegisteredUserController extends Controller
         //$user->assignRole('admin');
         event(new Registered($user));
 
-        Auth::login($user);
+        //Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        return redirect()->route('dashboard');
     }
 }

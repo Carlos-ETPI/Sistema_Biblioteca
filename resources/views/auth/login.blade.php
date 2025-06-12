@@ -60,7 +60,7 @@
                                     </form>
                                 </div>
                                 <div class="card-footer text-center py-3">
-                                    <div class="small"><a href="{{ route('register') }}">Registrarse!</a></div>
+                                    
                                 </div>
                             </div>
                         </div>
