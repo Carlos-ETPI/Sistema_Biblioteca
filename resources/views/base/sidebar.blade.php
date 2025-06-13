@@ -7,22 +7,30 @@
                     @role('admin')
                         <div class="sb-sidenav-menu-heading">Gestion de usuarios</div>
                         <a class="nav-link" href="{{ route('admin.users.index') }}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
                             Usuarios
                         </a>
                         <a class="nav-link" href="{{ route('admin.rol.index') }}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            <div class="sb-nav-link-icon"><i class="fas fa-users-cog"></i></div>
                             Roles
                         </a>
                         <a class="nav-link" href="{{ route('admin.permissions.index') }}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            <div class="sb-nav-link-icon"><i class="fas fa-key"></i></div>
                             Permisos
                         </a>
                     @endrole
-                    <div class="sb-sidenav-menu-heading">Interface</div>
-                    <a class="nav-link" href="{{ route('register') }}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                    <div class="sb-sidenav-menu-heading">Acciones</div>
+                        <a class="nav-link" href="{{ route('register') }}">
+                            <div class="sb-nav-link-icon"><i class="fas fa-archive"></i></div>
                             Registrar Usuario
+                        </a>
+                        <a class="nav-link" href="{{ route('ejemplares.disponibles') }}">
+                            <div class="sb-nav-link-icon"><i class="fas fa-book"></i></div>
+                            Registrar Prestamo
+                        </a>
+                        <a class="nav-link" href="{{ route('usuarios.prestamos') }}">
+                            <div class="sb-nav-link-icon"><i class="fas fa-book"></i></div>
+                            Procesar Prestamo
                         </a>
                     <a class="nav-link collapsed" href="" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                         <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
@@ -66,19 +74,12 @@
                             </div>
                         </nav>
                     </div>
-                    <div class="sb-sidenav-menu-heading">Addons</div>
-                    <a class="nav-link" href="#">
-                        <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                        Charts
-                    </a>
-                    <a class="nav-link" href="#">
-                        <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                        Tables
-                    </a>
+                    <div class="sb-sidenav-menu-heading"></div>
+                    
                 </div>
             </div>
             <div class="sb-sidenav-footer">
-                <div class="small">Logged in as:</div>
+                <div class="small">Inicio sesion como: {{ Auth::user()->name }}</div>
                 Librarium
             </div>
         </nav>

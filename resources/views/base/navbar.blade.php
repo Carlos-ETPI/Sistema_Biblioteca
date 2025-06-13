@@ -1,7 +1,7 @@
 
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
     <!-- Navbar Brand-->
-    <a class="navbar-brand " href="#">
+    <a class="navbar-brand " href="{{ route('dashboard') }}">
     <img src="{{ asset('image/logo.png') }}" alt="Logo" style="height: 90px;">
 </a>
     <!-- Sidebar Toggle-->
@@ -18,8 +18,8 @@
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="#">Settings</a></li>
-                <li><a class="dropdown-item" href="#">Activity Log</a></li>
+                <!-- <li><a class="dropdown-item" href="#">Settings</a></li>
+                <li><a class="dropdown-item" href="#">Activity Log</a></li> -->
                 <li><hr class="dropdown-divider" /></li>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf

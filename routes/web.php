@@ -7,6 +7,8 @@ use App\Http\Controllers\Admin\RolPermissionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\ActivationController;
+use App\Http\Controllers\PrestamoController;
+
 Route::get('/', function () {
     return view('auth.login');
 });
@@ -54,5 +56,14 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     Route::get('permissions/{permission}/edit', [PermissionController::class, 'edit'])->name('permissions.edit');
 });
 Route::get('/reactivate/{token}', [ActivationController::class, 'reactivate'])->name('user.reactivate');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/ejemplares-disponibles', [PrestamoController::class, 'ejemplaresDisponibles'])->name('ejemplares.disponibles');;
+    Route::post('/registrar-prestamo', [PrestamoController::class, 'registrarPrestamo'])->name('registrar.prestamo');
+    Route::get('/usuarios-prestamos', [PrestamoController::class, 'mostrarUsuariosConPrestamos'])->name('usuarios.prestamos');;
+    Route::get('/prestamo-detalle/{id_usuario}', [PrestamoController::class, 'mostrarPrestamosPorUsuario'])->name('prestamo.detalle');
+
+});
+
 
 require __DIR__.'/auth.php';
