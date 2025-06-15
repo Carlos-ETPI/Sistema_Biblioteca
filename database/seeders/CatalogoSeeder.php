@@ -8,7 +8,7 @@ class CatalogoSeeder extends Seeder
 {
     public function run()
     {
-        DB::table('catalogo')->insert([
+        DB::table('CATALOGO')->insert([
             ['ID_CATALOGO' => 1, 'BIBLIOTECA_CATALOGO' => 'Biblioteca Central'],
         ]);
     }
