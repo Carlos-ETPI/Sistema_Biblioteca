@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->string('DUI_PERSONA', 10)->unique();
             $table->timestamps();
 
-            $table->primary(['ID_PERSONA', 'DUI_PERSONA']);
+            //$table->primary(['ID_PERSONA', 'DUI_PERSONA']);
         });
     }
 
