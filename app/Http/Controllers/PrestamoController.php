@@ -79,9 +79,9 @@ class PrestamoController extends Controller
 
     
     $usuario = DB::table('users')
-    ->join('persona', 'persona.ID_PERSONA', '=', 'users.ID_USUARIO')
+    ->join('PERSONA', 'PERSONA.ID_PERSONA', '=', 'users.ID_USUARIO')
     ->where('users.ID_USUARIO', $id_usuario) 
-    ->select('users.id', 'persona.NOMBRE_PERSONA', 'persona.APELLIDO_PERSONA', 'persona.DUI_PERSONA')
+    ->select('users.id', 'PERSONA.NOMBRE_PERSONA', 'PERSONA.APELLIDO_PERSONA', 'PERSONA.DUI_PERSONA')
     ->first();
 
 
