@@ -41,46 +41,46 @@ class StoredProceduresSeeder extends Seeder
             END
         ');
 
-        DB::unprepared('
-            CREATE PROCEDURE sp_despachar_varios_ejemplares (
-                IN p_ids_ejemplares TEXT
-            )
-            BEGIN
-                DECLARE v_id INT;
-                DECLARE done INT DEFAULT FALSE;
-                DECLARE ejemplar_cursor CURSOR FOR 
-                    SELECT CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(p_ids_ejemplares, ',', numbers.n), ',', -1) AS UNSIGNED) AS id
-                    FROM (
-                        SELECT 1 AS n UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5
-                        UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9 UNION ALL SELECT 10
-                    ) AS numbers
-                   
-                    WHERE numbers.n <= LENGTH(p_ids_ejemplares) - LENGTH(REPLACE(p_ids_ejemplares, \',\', \'\')) + 1;
+        DB::unprepared("
+    CREATE PROCEDURE sp_despachar_varios_ejemplares (
+        IN p_ids_ejemplares TEXT
+    )
+    BEGIN
+        DECLARE v_id INT;
+        DECLARE done INT DEFAULT FALSE;
 
+        DECLARE ejemplar_cursor CURSOR FOR 
+            SELECT CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(p_ids_ejemplares, ',', numbers.n), ',', -1) AS UNSIGNED) AS id
+            FROM (
+                SELECT 1 AS n UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5
+                UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9 UNION ALL SELECT 10
+            ) AS numbers
+            WHERE numbers.n <= LENGTH(p_ids_ejemplares) - LENGTH(REPLACE(p_ids_ejemplares, ',', '')) + 1;
 
-                DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+        DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
 
-                OPEN ejemplar_cursor;
+        OPEN ejemplar_cursor;
 
-                read_loop: LOOP
-                    FETCH ejemplar_cursor INTO v_id;
-                    IF done THEN
-                        LEAVE read_loop;
-                    END IF;
+        read_loop: LOOP
+            FETCH ejemplar_cursor INTO v_id;
+            IF done THEN
+                LEAVE read_loop;
+            END IF;
 
-                    UPDATE ejemplar
-                    SET ESTADO_EJEMPLAR = 3, updated_at = NOW()
-                    WHERE ID_EJEMPLAR = v_id;
+            UPDATE ejemplar
+            SET ESTADO_EJEMPLAR = 3, updated_at = NOW()
+            WHERE ID_EJEMPLAR = v_id;
 
-                    UPDATE presta
-                    SET ESTADO_PRESTA = 2, updated_at = NOW()
-                    WHERE ID_EJEMPLAR = v_id AND ESTADO_PRESTA = 1;
+            UPDATE presta
+            SET ESTADO_PRESTA = 2, updated_at = NOW()
+            WHERE ID_EJEMPLAR = v_id AND ESTADO_PRESTA = 1;
 
-                END LOOP;
+        END LOOP;
 
-                CLOSE ejemplar_cursor;
-            END
-        ');
+        CLOSE ejemplar_cursor;
+    END
+");
+
 
         DB::unprepared('
             CREATE PROCEDURE sp_libros_prestados_por_usuario(
