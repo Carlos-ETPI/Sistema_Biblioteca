@@ -67,7 +67,7 @@ class StoredProceduresSeeder extends Seeder
                 LEAVE read_loop;
             END IF;
 
-            UPDATE EEMPLAR
+            UPDATE EJEMPLAR
             SET ESTADO_EJEMPLAR = 3, updated_at = NOW()
             WHERE ID_EJEMPLAR = v_id;
 
