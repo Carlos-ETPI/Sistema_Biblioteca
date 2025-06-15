@@ -1,10 +1,7 @@
 services:
   - type: web
     name: laravel-app
-    env: docker          
     plan: free
-    docker:
-      dockerfilePath: Dockerfile   
     envVars:
       - key: APP_ENV
         value: production
@@ -29,6 +26,7 @@ services:
         value: badpruebas52@gmail.com
       - key: MAIL_FROM_NAME
         value: Librarium
+      # Base de datos
       - key: DB_CONNECTION
         value: mysql
       - key: DB_HOST
