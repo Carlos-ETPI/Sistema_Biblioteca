@@ -29,12 +29,12 @@ class StoredProceduresSeeder extends Seeder
                     c.NOM_CATEGORIA,
                     c.DESCRIPCION_CATEGORIA,
                     GROUP_CONCAT(CONCAT(a.NOM_AUTOR, " ", a.APE_AUTOR) SEPARATOR ", ") AS AUTORES
-                FROM ejemplar e
-                JOIN titulo t ON e.ID_TITULO = t.ID_TITULO
-                JOIN tituloautor ta ON t.ID_TITULO = ta.ID_TITULO
-                JOIN autor a ON ta.ID_AUTOR = a.ID_AUTOR
-                JOIN categoria c ON c.ID_CATEGORIA = t.ID_CATEGORIA
-                LEFT JOIN presta p ON e.ID_EJEMPLAR = p.ID_EJEMPLAR AND p.ESTADO_PRESTA = 1
+                FROM EJEMPLAR e
+                JOIN TITULO t ON e.ID_TITULO = t.ID_TITULO
+                JOIN TITULOAUTOR ta ON t.ID_TITULO = ta.ID_TITULO
+                JOIN AUTOR a ON ta.ID_AUTOR = a.ID_AUTOR
+                JOIN CATEGORIA c ON c.ID_CATEGORIA = t.ID_CATEGORIA
+                LEFT JOIN PRESTA p ON e.ID_EJEMPLAR = p.ID_EJEMPLAR AND p.ESTADO_PRESTA = 1
                 WHERE p.ID_PRESTA IS NULL
                     AND e.ESTADO_EJEMPLAR = 1
                 GROUP BY e.ID_EJEMPLAR, t.NOMBRE_TITULO, c.NOM_CATEGORIA, c.DESCRIPCION_CATEGORIA;
@@ -67,11 +67,11 @@ class StoredProceduresSeeder extends Seeder
                 LEAVE read_loop;
             END IF;
 
-            UPDATE ejemplar
+            UPDATE EEMPLAR
             SET ESTADO_EJEMPLAR = 3, updated_at = NOW()
             WHERE ID_EJEMPLAR = v_id;
 
-            UPDATE presta
+            UPDATE PRESTA
             SET ESTADO_PRESTA = 2, updated_at = NOW()
             WHERE ID_EJEMPLAR = v_id AND ESTADO_PRESTA = 1;
 
@@ -93,9 +93,9 @@ class StoredProceduresSeeder extends Seeder
                     p.FECHA_PRESTA,
                     p.FECHA_DEVO,
                     e.ID_EJEMPLAR
-                FROM presta p
-                INNER JOIN ejemplar e ON e.ID_EJEMPLAR = p.ID_EJEMPLAR
-                INNER JOIN titulo t ON t.ID_TITULO = e.ID_TITULO
+                FROM PRESTA p
+                INNER JOIN EJEMPLAR e ON e.ID_EJEMPLAR = p.ID_EJEMPLAR
+                INNER JOIN TITULO t ON t.ID_TITULO = e.ID_TITULO
                 WHERE p.ID_USUARIO = p_id_usuario
                   AND p.ESTADO_PRESTA = 1
                 ORDER BY p.FECHA_PRESTA;
@@ -114,7 +114,7 @@ class StoredProceduresSeeder extends Seeder
 
                 -- Verificar si el ejemplar ya está prestado
                 SELECT COUNT(*) INTO v_existente
-                FROM presta
+                FROM PRESTA
                 WHERE ID_EJEMPLAR = p_id_ejemplar
                   AND ESTADO_PRESTA = 1;
 
@@ -123,7 +123,7 @@ class StoredProceduresSeeder extends Seeder
                     SET MESSAGE_TEXT = \'El ejemplar ya está prestado\';
                 ELSE
                     -- Insertar un nuevo costo de préstamo con valores por defecto
-                    INSERT INTO costo_presta (
+                    INSERT INTO COSTO_PRESTA (
                       COSTO_PRESTA,
                       MORA_PRESTA,
                       ESTADO_CANCELADO,
@@ -138,7 +138,7 @@ class StoredProceduresSeeder extends Seeder
                     SET v_id_costo_presta = LAST_INSERT_ID();
 
                     -- Insertar en la tabla presta
-                    INSERT INTO presta (
+                    INSERT INTO PRESTA (
                       ID_EJEMPLAR,
                       ID_USUARIO,
                       ID_COSTO_PRESTA,
@@ -159,7 +159,7 @@ class StoredProceduresSeeder extends Seeder
                     );
 
                     -- Actualizar el estado del ejemplar a no disponible
-                    UPDATE ejemplar
+                    UPDATE EJEMPLAR
                     SET ESTADO_EJEMPLAR = 0
                     WHERE ID_EJEMPLAR = p_id_ejemplar;
                 END IF;
@@ -177,7 +177,7 @@ class StoredProceduresSeeder extends Seeder
                     COUNT(pr.ID_PRESTA) AS total_prestamos,
                     GROUP_CONCAT(pr.ID_EJEMPLAR) AS ejemplares_prestados
                 FROM USUARIO u
-                INNER JOIN persona p ON p.ID_PERSONA = u.ID_PERSONA
+                INNER JOIN PERSONA p ON p.ID_PERSONA = u.ID_PERSONA
                 INNER JOIN users us ON us.id = u.ID_USUARIO
                 INNER JOIN PRESTA pr ON pr.ID_USUARIO = us.id
                 WHERE pr.ESTADO_PRESTA = 1
@@ -192,17 +192,17 @@ class StoredProceduresSeeder extends Seeder
                 DECLARE v_id_ejemplar INT;
 
                 SELECT ID_EJEMPLAR INTO v_id_ejemplar
-                FROM presta
+                FROM PRESTA
                 WHERE ID_PRESTA = p_id_presta;
 
                 IF v_id_ejemplar IS NOT NULL THEN
-                    UPDATE presta
+                    UPDATE PRESTA
                     SET ESTADO_PRESTA = 0,
                         FECHA_DEVO = NOW(),
                         updated_at = NOW()
                     WHERE ID_PRESTA = p_id_presta;
 
-                    UPDATE ejemplar
+                    UPDATE EJEMPLAR
                     SET ESTADO_EJEMPLAR = 0,
                         updated_at = NOW()
                     WHERE ID_EJEMPLAR = v_id_ejemplar;
@@ -215,7 +215,7 @@ class StoredProceduresSeeder extends Seeder
             CREATE PROCEDURE sp_obtener_email_por_prestamo(IN p_id_presta INT)
             BEGIN
                 SELECT u.email
-                FROM presta p
+                FROM PRESTA p
                 JOIN users u ON u.ID_USUARIO = p.ID_USUARIO
                 WHERE p.ID_PRESTA = p_id_presta;
             END
@@ -230,8 +230,8 @@ class StoredProceduresSeeder extends Seeder
                     p.ID_EJEMPLAR,
                     p.ID_USUARIO,
                     e.ESTADO_EJEMPLAR
-                FROM presta p
-                JOIN ejemplar e ON p.ID_EJEMPLAR = e.ID_EJEMPLAR
+                FROM PRESTA p
+                JOIN EJEMPLAR e ON p.ID_EJEMPLAR = e.ID_EJEMPLAR
                 WHERE e.ESTADO_EJEMPLAR = 3;
             END
         ");
