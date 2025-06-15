@@ -1,7 +1,6 @@
 services:
   - type: web
-    name: laravel-app
-    env: php
+    name: biblioteca-app
     plan: free
     buildCommand: |
       composer install --no-dev --optimize-autoloader
