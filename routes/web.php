@@ -63,6 +63,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/usuarios-prestamos', [PrestamoController::class, 'mostrarUsuariosConPrestamos'])->name('usuarios.prestamos');;
     Route::get('/prestamo-detalle/{id_usuario}', [PrestamoController::class, 'mostrarPrestamosPorUsuario'])->name('prestamo.detalle');
     Route::post('/despachar-varios', [PrestamoController::class, 'despacharVarios'])->name('despachar.varios');
+
+    // Gestionar prestamos
+    Route::get('/gestionar-prestamos', [PrestamoController::class, 'gestionar_prestamos'])->name('prestamo.gestionar_prestamos');
+    // Devolver prestamos
+    Route::get('/devolver-prestamo/{ID_PRESTA}', [PrestamoController::class, 'devolver_prestamo'])->name('prestamo.devolver_prestamo');
+
 });
 
 

@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\libro_devuelto_notification;
 use Exception;
+
 
 class PrestamoController extends Controller
 {
@@ -107,4 +110,48 @@ public function despacharVarios(Request $request)
     }
 }
 
+    // Gestionar prestamo 
+    public function gestionar_prestamos(Request $request)
+    {
+
+        $coleccion = DB::select('CALL sp_prestamos_con_estado_ejemplar_3()');
+
+        return view('prestamos_libros.gestionar_prestamos', compact('coleccion'));
+
+    }
+
+    public function devolver_prestamo($ID_PRESTA)
+    { 
+        try {
+            DB::statement('CALL sp_devolver_prestamo(?)', [$ID_PRESTA]);
+            
+            // Enviar notificación por correo electrónico
+            //}}obtener el correo del usuario asociado al préstamo
+            $correoDestino = DB::table('presta as p')
+                ->join('usuario as usu', 'p.ID_USUARIO', '=', 'usu.ID_USUARIO')
+                ->join('users as u', 'u.ID_USUARIO', '=', 'usu.ID_USUARIO')
+                ->where('p.ID_PRESTA', $ID_PRESTA)
+                ->value('u.email'); 
+            //obtener la mora asociada al préstamo
+            $mora = DB::table('presta as p')
+                ->join('costo_presta as cp', 'p.ID_COSTO_PRESTA', '=', 'cp.ID_COSTO_PRESTA')
+                ->where('p.ID_PRESTA', $ID_PRESTA)
+                ->value('cp.MORA_PRESTA');
+            $mensaje = 'EL LIBRO HA SIDO DEVUELTO, posees un monto de mora: ' . $mora . ' DOLARES, por favor consulta tu cuenta o hacer caso comiso.';
+            //enviando el correo
+            Mail::to($correoDestino)->send(new libro_devuelto_notification($mensaje));
+
+            return redirect()->route('prestamo.gestionar_prestamos')
+                ->with('success', 'Préstamo devuelto exitosamente.');
+
+
+
+        } catch (Exception $e) {
+            \Log::error('Error al devolver préstamo: ' . $e->getMessage());
+            return redirect()->route('prestamo.gestionar_prestamos')
+                ->with('error', 'No se pudo devolver el préstamo.');
+        }
+                
+
+    }
 }
