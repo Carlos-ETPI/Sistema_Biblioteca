@@ -39,7 +39,7 @@ services:
       - key: FILESYSTEM_DISK
         value: local
 
-      # Variables de correo
+      # Mail
       - key: MAIL_MAILER
         value: smtp
       - key: MAIL_HOST
@@ -57,7 +57,7 @@ services:
       - key: MAIL_FROM_NAME
         value: Librarium
 
-      # Variables de conexión a base de datos desde Render
+      # Base de datos (Render las enlaza automáticamente)
       - key: DB_CONNECTION
         value: mysql
       - key: DB_HOST
