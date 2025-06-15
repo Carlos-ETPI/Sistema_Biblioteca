@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: biblioteca-app
+    name: laravel-app
     plan: free
     buildCommand: |
       composer install --no-dev --optimize-autoloader
@@ -16,29 +16,6 @@ services:
         value: false
       - key: APP_URL
         value: https://laravel-app.onrender.com
-      - key: APP_LOCALE
-        value: es
-      - key: APP_FALLBACK_LOCALE
-        value: en
-      - key: APP_FAKER_LOCALE
-        value: es_ES
-      - key: LOG_CHANNEL
-        value: stack
-      - key: LOG_LEVEL
-        value: debug
-      - key: SESSION_DRIVER
-        value: database
-      - key: SESSION_LIFETIME
-        value: 120
-      - key: SESSION_ENCRYPT
-        value: false
-      - key: QUEUE_CONNECTION
-        value: database
-      - key: CACHE_STORE
-        value: database
-      - key: FILESYSTEM_DISK
-        value: local
-
       # Mail
       - key: MAIL_MAILER
         value: smtp
@@ -56,8 +33,6 @@ services:
         value: badpruebas52@gmail.com
       - key: MAIL_FROM_NAME
         value: Librarium
-
-      # Base de datos (Render las enlaza automáticamente)
       - key: DB_CONNECTION
         value: mysql
       - key: DB_HOST
