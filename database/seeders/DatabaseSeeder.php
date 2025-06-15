@@ -6,6 +6,8 @@ use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
+
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -21,5 +23,16 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('prueba1234'),
         ]);
         $user->assignRole('admin');
+        
+            $this->call([
+            CategoriaSeeder::class,
+            CatalogoSeeder::class,
+            IdiomaSeeder::class,
+            AutorSeeder::class,
+            TituloSeeder::class,
+            TituloAutorSeeder::class,
+            EjemplarSeeder::class,
+        ]);
+
     }
 }
