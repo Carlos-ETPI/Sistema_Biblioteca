@@ -8,7 +8,7 @@ class TituloAutorSeeder extends Seeder
 {
     public function run()
     {
-        DB::table('tituloautor')->insert([
+        DB::table('TITULOAUTOR')->insert([
             ['ID_TITULO' => 1, 'ID_AUTOR' => 1],
             ['ID_TITULO' => 1, 'ID_AUTOR' => 2],
             ['ID_TITULO' => 2, 'ID_AUTOR' => 3],

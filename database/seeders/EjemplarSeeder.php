@@ -8,7 +8,7 @@ class EjemplarSeeder extends Seeder
 {
     public function run()
     {
-        DB::table('ejemplar')->insert([
+        DB::table('EJEMPLAR')->insert([
         ['ID_EJEMPLAR' => 1, 'ID_TITULO' => 1, 'ESTADO_EJEMPLAR' => 1],
         ['ID_EJEMPLAR' => 2, 'ID_TITULO' => 1, 'ESTADO_EJEMPLAR' => 1],
         ['ID_EJEMPLAR' => 3, 'ID_TITULO' => 1, 'ESTADO_EJEMPLAR' => 1],
