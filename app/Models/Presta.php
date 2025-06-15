@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Traits\TracksUserChanges;
 
 class Presta extends Model
 {
@@ -11,6 +12,7 @@ class Presta extends Model
     public $timestamps = false;
     public $incrementing = false;
     protected $primaryKey = null;
+    use TracksUserChanges;
 
     protected $fillable = [
         'ID_EJEMPLAR',
@@ -20,6 +22,8 @@ class Presta extends Model
         'ESTADO_PRESTA',
         'FECHA_PRESTA',
         'FECHA_DEVO',
+        'created_by',  
+        'updated_by',
     ];
 
     public function ejemplar(): BelongsTo

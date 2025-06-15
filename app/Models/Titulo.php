@@ -6,12 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use App\Traits\TracksUserChanges;
 
 class Titulo extends Model
 {
     protected $table = 'TITULO';
     protected $primaryKey = 'ID_TITULO';
     public $timestamps = false;
+    use TracksUserChanges;
 
     protected $fillable = [
         'ID_CATALOGO',
@@ -19,6 +21,8 @@ class Titulo extends Model
         'ID_IDIOMA',
         'NOMBRE_TITULO',
         'ISBN_TITULO',
+        'created_by',  
+        'updated_by',
     ];
 
     public function catalogo(): BelongsTo

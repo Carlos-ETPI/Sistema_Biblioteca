@@ -76,7 +76,7 @@
                 type: 'inline',
             }
         },
-    }).buttons().container().appendTo("#roles_table_wrapper .col-md-6:eq(0)");
+    }).buttons().container().appendTo("#pestamo_table_wrapper .col-md-6:eq(0)");
     });
 </script>
 @endsection

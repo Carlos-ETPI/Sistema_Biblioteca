@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use App\Traits\TracksUserChanges;
 
 class Persona extends Model
 {
@@ -11,6 +12,7 @@ class Persona extends Model
     protected $primaryKey = 'ID_PERSONA';
     public $incrementing = true;
     public $timestamps = false;
+    use TracksUserChanges;
 
     protected $fillable = [
         'NOMBRE_PERSONA',
@@ -18,6 +20,8 @@ class Persona extends Model
         'NACIMIENTO_PERSONA',
         'TELEFONO_PERSONA',
         'DUI_PERSONA',
+        'created_by',  
+        'updated_by',
     ];
 
     // Relación con USUARIO
