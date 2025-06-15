@@ -176,10 +176,10 @@ class StoredProceduresSeeder extends Seeder
                     p.APELLIDO_PERSONA,
                     COUNT(pr.ID_PRESTA) AS total_prestamos,
                     GROUP_CONCAT(pr.ID_EJEMPLAR) AS ejemplares_prestados
-                FROM usuario u
+                FROM USUARIO u
                 INNER JOIN persona p ON p.ID_PERSONA = u.ID_PERSONA
                 INNER JOIN users us ON us.id = u.ID_USUARIO
-                INNER JOIN presta pr ON pr.ID_USUARIO = us.id
+                INNER JOIN PRESTA pr ON pr.ID_USUARIO = us.id
                 WHERE pr.ESTADO_PRESTA = 1
                 GROUP BY us.id, p.DUI_PERSONA, p.NOMBRE_PERSONA, p.APELLIDO_PERSONA;
             END
