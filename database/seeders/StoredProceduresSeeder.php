@@ -54,7 +54,8 @@ class StoredProceduresSeeder extends Seeder
                         SELECT 1 AS n UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5
                         UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9 UNION ALL SELECT 10
                     ) AS numbers
-                    WHERE numbers.n <= LENGTH(p_ids_ejemplares) - LENGTH(REPLACE(p_ids_ejemplares, ',', '')) + 1;
+                   
+                    WHERE numbers.n <= LENGTH(p_ids_ejemplares) - LENGTH(REPLACE(p_ids_ejemplares, \',\', \'\')) + 1;
 
 
                 DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
