@@ -41,17 +41,16 @@ class PrestamoController extends Controller
         try {
             DB::statement('CALL sp_prestar_ejemplar(?, ?, ?)', [
                 $request->input('id_ejemplar'),
-                auth()->id(),
-
+                auth()->user()->usuario->ID_USUARIO,
                 $request->input('dias_prestamo'),
             ]);
-
+            \Log::info('ID de usuario autenticado: ' . auth()->id());
             // Redirige a la lista con mensaje de éxito
             return redirect()->route('ejemplares.disponibles')
                 ->with('success', 'Préstamo registrado exitosamente.');
         } catch (Exception $e) {
             \Log::error('Error al registrar préstamo: ' . $e->getMessage());
-
+            
             $errorMessage = $e->getMessage();
             if (str_contains($errorMessage, 'El ejemplar ya está prestado')) {
                 return redirect()->route('ejemplares.disponibles')
@@ -75,14 +74,37 @@ class PrestamoController extends Controller
     // Ejecutar el SP con el parámetro usuario
     $prestamos = DB::select('CALL sp_libros_prestados_por_usuario(?)', [$id_usuario]);
 
-    // Puedes obtener también datos del usuario si quieres mostrar
+    
     $usuario = DB::table('users')
-        ->join('persona', 'persona.ID_PERSONA', '=', 'users.ID_USUARIO')
-        ->where('users.id', $id_usuario)
-        ->select('users.id', 'persona.NOMBRE_PERSONA', 'persona.APELLIDO_PERSONA', 'persona.DUI_PERSONA')
-        ->first();
+    ->join('persona', 'persona.ID_PERSONA', '=', 'users.ID_USUARIO')
+    ->where('users.ID_USUARIO', $id_usuario) 
+    ->select('users.id', 'persona.NOMBRE_PERSONA', 'persona.APELLIDO_PERSONA', 'persona.DUI_PERSONA')
+    ->first();
+
 
     return view('prestamos_libros.prestamo_detalle', compact('prestamos', 'usuario'));
+}
+
+public function despacharVarios(Request $request)
+{
+    $ids = $request->input('ids', []);
+    $id_usuario = $request->input('id_usuario');
+
+    if (empty($ids)) {
+        return back()->with('error', 'No hay ejemplares para despachar.');
+    }
+
+    $idsString = implode(',', $ids);
+
+    try {
+        \DB::statement('CALL sp_despachar_varios_ejemplares(?)', [$idsString]);
+        // Redirige a la vista de detalle del usuario despachado
+        return redirect()->route('usuarios.prestamos')
+            ->with('success', 'Ejemplares despachados correctamente.');
+    } catch (\Exception $e) {
+        \Log::error('Error al despachar ejemplares: ' . $e->getMessage());
+        return back()->with('error', 'No se pudieron despachar los ejemplares.');
+    }
 }
 
 }

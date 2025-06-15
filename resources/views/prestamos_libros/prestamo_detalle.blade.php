@@ -32,7 +32,16 @@
             @else
                 <p>Este usuario no tiene préstamos activos.</p>
             @endif
-            <a href="{{ url('/usuarios-prestamos') }}" class="btn btn-secondary mt-3">Volver</a>
+            <div class="d-flex justify-content-end gap-2 mt-3">
+                <a href="{{ url('/usuarios-prestamos') }}" class="btn btn-secondary mt-3">Volver</a>
+                <form method="POST" action="{{ route('despachar.varios') }}">
+                    @csrf
+                    @foreach($prestamos as $prestamo)
+                        <input type="hidden" name="ids[]" value="{{ $prestamo->ID_EJEMPLAR }}">
+                    @endforeach
+                    <button type="submit" class="btn btn-success mt-3">Despachar todos</button>
+                </form>
+            </div>
         </div>
     </div>
         </div>

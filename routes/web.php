@@ -62,7 +62,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/registrar-prestamo', [PrestamoController::class, 'registrarPrestamo'])->name('registrar.prestamo');
     Route::get('/usuarios-prestamos', [PrestamoController::class, 'mostrarUsuariosConPrestamos'])->name('usuarios.prestamos');;
     Route::get('/prestamo-detalle/{id_usuario}', [PrestamoController::class, 'mostrarPrestamosPorUsuario'])->name('prestamo.detalle');
-
+    Route::post('/despachar-varios', [PrestamoController::class, 'despacharVarios'])->name('despachar.varios');
 });
 
 

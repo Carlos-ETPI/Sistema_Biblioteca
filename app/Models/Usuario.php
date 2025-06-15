@@ -4,12 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Traits\TracksUserChanges;
 
 class Usuario extends Model
 {
+    use TracksUserChanges;
     protected $table = 'USUARIO';
     protected $primaryKey = 'ID_USUARIO';
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $fillable = [
         'ID_PERSONA',
@@ -17,6 +19,8 @@ class Usuario extends Model
         'ID_ROL',
         'FECHAREGISTRO_USUARIO',
         'ESTADO_USUARIO',
+        'created_by',  
+        'updated_by',
     ];
 
     public function persona(): BelongsTo
