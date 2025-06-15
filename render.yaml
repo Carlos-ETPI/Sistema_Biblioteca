@@ -7,6 +7,8 @@ services:
       composer install --no-dev --optimize-autoloader
       php artisan key:generate
       php artisan migrate --force
+      php artisan db:seed --class=RoleSeeder --force
+      php artisan db:seed --force
     startCommand: php artisan serve --host 0.0.0.0 --port 10000
     envVars:
       - key: APP_ENV
@@ -14,7 +16,7 @@ services:
       - key: APP_DEBUG
         value: false
       - key: APP_URL
-        value: https://laravel-app.onrender.com # cámbialo al URL real
+        value: https://laravel-app.onrender.com
       - key: APP_LOCALE
         value: es
       - key: APP_FALLBACK_LOCALE
@@ -38,7 +40,7 @@ services:
       - key: FILESYSTEM_DISK
         value: local
 
-      # Variables de Mail
+      # Variables de correo
       - key: MAIL_MAILER
         value: smtp
       - key: MAIL_HOST
@@ -56,25 +58,30 @@ services:
       - key: MAIL_FROM_NAME
         value: Librarium
 
-      # Laravel DB
+      # Variables de conexión a base de datos desde Render
       - key: DB_CONNECTION
         value: mysql
       - key: DB_HOST
-        fromService:
-          type: pserv
+        fromDatabase:
           name: mysql-db
+          property: host
       - key: DB_PORT
-        value: 3306
+        fromDatabase:
+          name: mysql-db
+          property: port
       - key: DB_DATABASE
-        value: bad
+        fromDatabase:
+          name: mysql-db
+          property: database
       - key: DB_USERNAME
-        value: root
+        fromDatabase:
+          name: mysql-db
+          property: user
       - key: DB_PASSWORD
-        value: 123
+        fromDatabase:
+          name: mysql-db
+          property: password
 
 databases:
   - name: mysql-db
-    databaseName: bad
-    user: root
-    password: 123
     plan: free
