@@ -220,19 +220,26 @@ class StoredProceduresSeeder extends Seeder
                 WHERE p.ID_PRESTA = p_id_presta;
             END
         ");
-
-        DB::unprepared("
+        
+          DB::unprepared("
             DROP PROCEDURE IF EXISTS sp_prestamos_con_estado_ejemplar_3;
             CREATE PROCEDURE sp_prestamos_con_estado_ejemplar_3()
             BEGIN
-                SELECT 
-                    p.ID_PRESTA,
-                    p.ID_EJEMPLAR,
-                    p.ID_USUARIO,
-                    e.ESTADO_EJEMPLAR
-                FROM PRESTA p
-                JOIN EJEMPLAR e ON p.ID_EJEMPLAR = e.ID_EJEMPLAR
-                WHERE e.ESTADO_EJEMPLAR = 3;
+                SELECT
+                    u.ID_USUARIO,
+                    p.ID_PERSONA,
+                    pr.ID_PRESTA,
+                    p.DUI_PERSONA,
+                    p.NOMBRE_PERSONA,
+                    p.APELLIDO_PERSONA,
+                    e.ID_EJEMPLAR,
+                    t.NOMBRE_TITULO
+                FROM presta pr
+                INNER JOIN usuario u ON pr.ID_USUARIO = u.ID_USUARIO
+                INNER JOIN persona p ON u.ID_PERSONA = p.ID_PERSONA
+                INNER JOIN ejemplar e ON pr.ID_EJEMPLAR = e.ID_EJEMPLAR
+                INNER JOIN titulo t ON e.ID_TITULO = t.ID_TITULO
+                WHERE e.ESTADO_EJEMPLAR = 3 AND pr.ESTADO_PRESTA = 2;
             END
         ");
 
