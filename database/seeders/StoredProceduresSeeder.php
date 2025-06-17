@@ -234,11 +234,11 @@ class StoredProceduresSeeder extends Seeder
                     p.APELLIDO_PERSONA,
                     e.ID_EJEMPLAR,
                     t.NOMBRE_TITULO
-                FROM presta pr
+                FROM PRESTA pr
                 INNER JOIN usuario u ON pr.ID_USUARIO = u.ID_USUARIO
-                INNER JOIN persona p ON u.ID_PERSONA = p.ID_PERSONA
-                INNER JOIN ejemplar e ON pr.ID_EJEMPLAR = e.ID_EJEMPLAR
-                INNER JOIN titulo t ON e.ID_TITULO = t.ID_TITULO
+                INNER JOIN PERSONA p ON u.ID_PERSONA = p.ID_PERSONA
+                INNER JOIN EJEMPLAR e ON pr.ID_EJEMPLAR = e.ID_EJEMPLAR
+                INNER JOIN TITULO t ON e.ID_TITULO = t.ID_TITULO
                 WHERE e.ESTADO_EJEMPLAR = 3 AND pr.ESTADO_PRESTA = 2;
             END
         ");
