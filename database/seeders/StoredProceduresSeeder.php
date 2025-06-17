@@ -235,7 +235,7 @@ class StoredProceduresSeeder extends Seeder
                     e.ID_EJEMPLAR,
                     t.NOMBRE_TITULO
                 FROM PRESTA pr
-                INNER JOIN usuario u ON pr.ID_USUARIO = u.ID_USUARIO
+                INNER JOIN USUARIO u ON pr.ID_USUARIO = u.ID_USUARIO
                 INNER JOIN PERSONA p ON u.ID_PERSONA = p.ID_PERSONA
                 INNER JOIN EJEMPLAR e ON pr.ID_EJEMPLAR = e.ID_EJEMPLAR
                 INNER JOIN TITULO t ON e.ID_TITULO = t.ID_TITULO
