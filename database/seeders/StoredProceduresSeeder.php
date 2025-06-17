@@ -203,7 +203,7 @@ class StoredProceduresSeeder extends Seeder
                     WHERE ID_PRESTA = p_id_presta;
 
                     UPDATE EJEMPLAR
-                    SET ESTADO_EJEMPLAR = 0,
+                    SET ESTADO_EJEMPLAR = 1,
                         updated_at = NOW()
                     WHERE ID_EJEMPLAR = v_id_ejemplar;
                 END IF;
