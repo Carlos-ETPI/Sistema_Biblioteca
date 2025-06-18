@@ -44,7 +44,7 @@ class StoredProceduresSeeder extends Seeder
 DB::unprepared("
     CREATE PROCEDURE sp_despachar_varios_ejemplares (
         IN p_ids_ejemplares TEXT,
-        IN p_updated_by INT, 
+        IN p_updated_by INT
     )
     BEGIN
         DECLARE v_id INT;
@@ -115,7 +115,7 @@ DB::unprepared("
                 IN p_id_ejemplar INT,
                 IN p_id_usuario INT,
                 IN p_dias_prestamo INT,
-                IN p_username INT,
+                IN p_username INT
             )
             BEGIN
                 DECLARE v_existente INT DEFAULT 0;
@@ -206,7 +206,7 @@ DB::unprepared("
             DROP PROCEDURE IF EXISTS sp_devolver_prestamo;
             CREATE PROCEDURE sp_devolver_prestamo(
                 IN p_id_presta INT,
-                IN p_updated_by INT,
+                IN p_updated_by INT
             )
             BEGIN
                 DECLARE v_id_ejemplar INT;
