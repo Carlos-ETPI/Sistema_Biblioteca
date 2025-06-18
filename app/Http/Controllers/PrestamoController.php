@@ -42,10 +42,11 @@ class PrestamoController extends Controller
         ]);
 
         try {
-            DB::statement('CALL sp_prestar_ejemplar(?, ?, ?)', [
+            DB::statement('CALL sp_prestar_ejemplar(?, ?, ?, ?)', [
                 $request->input('id_ejemplar'),
                 auth()->user()->usuario->ID_USUARIO,
                 $request->input('dias_prestamo'),
+                auth()->user()->id,
             ]);
             \Log::info('ID de usuario autenticado: ' . auth()->id());
             // Redirige a la lista con mensaje de éxito
@@ -59,9 +60,9 @@ class PrestamoController extends Controller
                 return redirect()->route('ejemplares.disponibles')
                     ->with('error', 'Este ejemplar ya está prestado actualmente.');
             }
-
+            
             return redirect()->route('ejemplares.disponibles')
-                ->with('error', 'No se pudo registrar el préstamo.');
+                ->with('error', "Error al registrar el préstamo: " . $errorMessage);
         }
     }
 
@@ -100,7 +101,7 @@ public function despacharVarios(Request $request)
     $idsString = implode(',', $ids);
 
     try {
-        \DB::statement('CALL sp_despachar_varios_ejemplares(?)', [$idsString]);
+        \DB::statement('CALL sp_despachar_varios_ejemplares(?, ?)', [$idsString, auth()->user()->id]);
         // Redirige a la vista de detalle del usuario despachado
         return redirect()->route('usuarios.prestamos')
             ->with('success', 'Ejemplares despachados correctamente.');
@@ -123,10 +124,10 @@ public function despacharVarios(Request $request)
     public function devolver_prestamo($ID_PRESTA)
     { 
         try {
-            DB::statement('CALL sp_devolver_prestamo(?)', [$ID_PRESTA]);
+            DB::statement('CALL sp_devolver_prestamo(?, ?)', [$ID_PRESTA, auth()->user()->id]);
             
             // Enviar notificación por correo electrónico
-            //}}obtener el correo del usuario asociado al préstamo
+            //obtener el correo del usuario asociado al préstamo
             $correoDestino = DB::table('presta as p')
                 ->join('usuario as usu', 'p.ID_USUARIO', '=', 'usu.ID_USUARIO')
                 ->join('users as u', 'u.ID_USUARIO', '=', 'usu.ID_USUARIO')
@@ -147,9 +148,10 @@ public function despacharVarios(Request $request)
 
 
         } catch (Exception $e) {
-            \Log::error('Error al devolver préstamo: ' . $e->getMessage());
+            $errorMessage = $e->getMessage();
+            \Log::error('Error al devolver préstamo: ' . $errorMessage);
             return redirect()->route('prestamo.gestionar_prestamos')
-                ->with('error', 'No se pudo devolver el préstamo.');
+                ->with('error',  $errorMessage);
         }
                 
 
