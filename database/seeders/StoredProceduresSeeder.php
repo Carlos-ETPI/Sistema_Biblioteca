@@ -41,9 +41,10 @@ class StoredProceduresSeeder extends Seeder
             END
         ');
 
-        DB::unprepared("
+DB::unprepared("
     CREATE PROCEDURE sp_despachar_varios_ejemplares (
-        IN p_ids_ejemplares TEXT
+        IN p_ids_ejemplares TEXT,
+        IN p_updated_by INT, 
     )
     BEGIN
         DECLARE v_id INT;
@@ -67,12 +68,18 @@ class StoredProceduresSeeder extends Seeder
                 LEAVE read_loop;
             END IF;
 
+            -- Actualizar tabla EJEMPLAR
             UPDATE EJEMPLAR
-            SET ESTADO_EJEMPLAR = 3, updated_at = NOW()
+            SET ESTADO_EJEMPLAR = 3,
+                updated_at = NOW(),
+                updated_by = p_updated_by
             WHERE ID_EJEMPLAR = v_id;
 
+            -- Actualizar tabla PRESTA
             UPDATE PRESTA
-            SET ESTADO_PRESTA = 2, updated_at = NOW()
+            SET ESTADO_PRESTA = 2,
+                updated_at = NOW(),
+                updated_by = p_updated_by
             WHERE ID_EJEMPLAR = v_id AND ESTADO_PRESTA = 1;
 
         END LOOP;
@@ -80,6 +87,7 @@ class StoredProceduresSeeder extends Seeder
         CLOSE ejemplar_cursor;
     END
 ");
+
 
 
         DB::unprepared('
@@ -106,7 +114,8 @@ class StoredProceduresSeeder extends Seeder
             CREATE PROCEDURE sp_prestar_ejemplar (
                 IN p_id_ejemplar INT,
                 IN p_id_usuario INT,
-                IN p_dias_prestamo INT
+                IN p_dias_prestamo INT,
+                IN p_username INT,
             )
             BEGIN
                 DECLARE v_existente INT DEFAULT 0;
@@ -116,7 +125,7 @@ class StoredProceduresSeeder extends Seeder
                 SELECT COUNT(*) INTO v_existente
                 FROM PRESTA
                 WHERE ID_EJEMPLAR = p_id_ejemplar
-                  AND ESTADO_PRESTA = 1;
+                AND ESTADO_PRESTA = 1;
 
                 IF v_existente > 0 THEN
                     SIGNAL SQLSTATE \'45000\'
@@ -124,14 +133,18 @@ class StoredProceduresSeeder extends Seeder
                 ELSE
                     -- Insertar un nuevo costo de préstamo con valores por defecto
                     INSERT INTO COSTO_PRESTA (
-                      COSTO_PRESTA,
-                      MORA_PRESTA,
-                      ESTADO_CANCELADO,
-                      MONTO_CANCELADO,
-                      created_at,
-                      updated_at
+                    COSTO_PRESTA,
+                    MORA_PRESTA,
+                    ESTADO_CANCELADO,
+                    MONTO_CANCELADO,
+                    created_at,
+                    updated_at,
+                    created_by,
+                    updated_by
                     ) VALUES (
-                      0, 0, 0, 0, NOW(), NOW()
+                    0, 0, 0, 0,
+                    NOW(), NOW(),
+                    p_username, p_username
                     );
 
                     -- Obtener el ID recién insertado
@@ -139,28 +152,32 @@ class StoredProceduresSeeder extends Seeder
 
                     -- Insertar en la tabla presta
                     INSERT INTO PRESTA (
-                      ID_EJEMPLAR,
-                      ID_USUARIO,
-                      ID_COSTO_PRESTA,
-                      ESTADO_PRESTA,
-                      FECHA_PRESTA,
-                      FECHA_DEVO,
-                      created_at,
-                      updated_at
+                    ID_EJEMPLAR,
+                    ID_USUARIO,
+                    ID_COSTO_PRESTA,
+                    ESTADO_PRESTA,
+                    FECHA_PRESTA,
+                    FECHA_DEVO,
+                    created_at,
+                    updated_at,
+                    created_by,
+                    updated_by
                     ) VALUES (
-                      p_id_ejemplar,
-                      p_id_usuario,
-                      v_id_costo_presta,
-                      1,
-                      CURDATE(),
-                      DATE_ADD(CURDATE(), INTERVAL p_dias_prestamo DAY),
-                      NOW(),
-                      NOW()
+                    p_id_ejemplar,
+                    p_id_usuario,
+                    v_id_costo_presta,
+                    1,
+                    CURDATE(),
+                    DATE_ADD(CURDATE(), INTERVAL p_dias_prestamo DAY),
+                    NOW(), NOW(),
+                    p_username, p_username
                     );
 
                     -- Actualizar el estado del ejemplar a no disponible
                     UPDATE EJEMPLAR
-                    SET ESTADO_EJEMPLAR = 0
+                    SET ESTADO_EJEMPLAR = 0,
+                        updated_at = NOW(),
+                        updated_by = p_username
                     WHERE ID_EJEMPLAR = p_id_ejemplar;
                 END IF;
             END
@@ -187,7 +204,10 @@ class StoredProceduresSeeder extends Seeder
 
         DB::unprepared("
             DROP PROCEDURE IF EXISTS sp_devolver_prestamo;
-            CREATE PROCEDURE sp_devolver_prestamo(IN p_id_presta INT)
+            CREATE PROCEDURE sp_devolver_prestamo(
+                IN p_id_presta INT,
+                IN p_updated_by INT,
+            )
             BEGIN
                 DECLARE v_id_ejemplar INT;
 
@@ -199,16 +219,19 @@ class StoredProceduresSeeder extends Seeder
                     UPDATE PRESTA
                     SET ESTADO_PRESTA = 0,
                         FECHA_DEVO = NOW(),
-                        updated_at = NOW()
+                        updated_at = NOW(),
+                        updated_by = p_updated_by
                     WHERE ID_PRESTA = p_id_presta;
 
                     UPDATE EJEMPLAR
-                    SET ESTADO_EJEMPLAR = 0,
-                        updated_at = NOW()
+                    SET ESTADO_EJEMPLAR = 1,
+                        updated_at = NOW(),
+                        updated_by = p_updated_by
                     WHERE ID_EJEMPLAR = v_id_ejemplar;
                 END IF;
             END
         ");
+
 
          DB::unprepared("
             DROP PROCEDURE IF EXISTS sp_obtener_email_por_prestamo;
