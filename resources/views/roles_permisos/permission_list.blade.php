@@ -28,8 +28,7 @@
                     <tr>
                         <th>ID</th>
                         <th>Nombre</th>
-                        <th>Guard</th>
-                        <th>Acciones</th>
+                        <th data-priority="1">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -37,7 +36,6 @@
                         <tr>
                             <td>{{ $permission->id }}</td>
                             <td>{{ $permission->name }}</td>
-                            <td>{{ $permission->guard_name }}</td>
                             <td>
                                 <a href="{{ route('admin.permissions.edit', $permission->id) }}" class="btn btn-sm btn-warning">
                                     Editar

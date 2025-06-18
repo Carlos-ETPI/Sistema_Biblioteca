@@ -28,7 +28,7 @@
                                 <th>Categoría</th>
                                 <th>Descripción</th>
                                 <th>Autores</th>
-                                <th>Acciones</th>
+                                <th data-priority="1">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -64,18 +64,18 @@
     $(document).ready(function () {
         $('#pestamo_table').DataTable({
             autoWidth: false,
-        paging: true,
-        ordering: true,
-        "pagingType": "full_numbers",
-            "lengthMenu": [
-                [25, 50, 100, -1],
-                [25, 50, 100, "Todos"]
-            ],
-        responsive: {
-            details: {
-                type: 'inline',
-            }
-        },
+            paging: true,
+            ordering: true,
+            "pagingType": "full_numbers",
+                "lengthMenu": [
+                    [25, 50, 100, -1],
+                    [25, 50, 100, "Todos"]
+                ],
+            responsive: {
+                details: {
+                    type: 'inline',
+                }
+            },
     }).buttons().container().appendTo("#pestamo_table_wrapper .col-md-6:eq(0)");
     });
 </script>

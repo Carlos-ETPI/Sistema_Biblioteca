@@ -24,7 +24,7 @@
                             <th>ID</th>
                             <th>Nombre</th>
                             <th>Guard</th>
-                            <th>Acciones</th>
+                            <th data-priority="1">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -56,7 +56,7 @@
         </div>
         <div class="card">
             <div class="card-body">
-                <table class="table table-bordered table-striped" id="tabla_roles">
+                <table class="table table-bordered table-striped" id="tabla_permisos">
                     <thead class="table-dark">
                         <tr>
                             <th>ID</th>
@@ -98,13 +98,13 @@
             searching: false,
             info: false,
             ordering: false
+            responsive: {
+                details: {
+                    type: 'inline',
+                }
+            },
         });
-        $('#tabla_roles').DataTable({
-            paging: false,
-            searching: false,
-            info: false,
-            ordering: false
-        });
+        
     });
 </script>
 @endsection

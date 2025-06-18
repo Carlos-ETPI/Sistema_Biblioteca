@@ -29,7 +29,7 @@
                                 <th>Apellido</th>
                                 <th>Total Préstamos</th>
                                 <th>Ejemplares Prestados</th>
-                                <th>Acciones</th>
+                                <th data-priority="1">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>

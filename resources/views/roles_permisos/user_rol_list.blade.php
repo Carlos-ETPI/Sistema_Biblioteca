@@ -24,7 +24,7 @@
                                 <th>Nombre</th>
                                 <th>Email</th>
                                 <th>Roles</th>
-                                <th>Acciones</th>
+                                <th data-priority="1">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>

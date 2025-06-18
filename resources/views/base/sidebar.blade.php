@@ -19,29 +19,31 @@
                             Permisos
                         </a>
                     @endrole
-                    @role('admin')
-                    <div class="sb-sidenav-menu-heading">Acciones</div>
-                        <a class="nav-link" href="{{ route('register') }}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-archive"></i></div>
-                            Registrar Usuario
-                        </a>
-                    @endrole
+                    @canany(['crear usuario'])
+                        <div class="sb-sidenav-menu-heading">Acciones</div>
+                            <a class="nav-link" href="{{ route('register') }}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-archive"></i></div>
+                                Registrar Usuario
+                            </a>
+                    @endcanany
+                    @canany(['ver ejemplares disponibles'])
                         <a class="nav-link" href="{{ route('ejemplares.disponibles') }}">
                             <div class="sb-nav-link-icon"><i class="fas fa-book"></i></div>
                             Registrar Prestamo
                         </a>
-                    @role('admin')
+                    @endcanany
+                    @canany(['ver usuarios prestamo'])
                         <a class="nav-link" href="{{ route('usuarios.prestamos') }}">
                             <div class="sb-nav-link-icon"><i class="fas fa-book"></i></div>
                             Procesar Prestamo
                         </a>
-                    @endrole
-                    @role('admin')
+                    @endcanany
+                    @canany(['gestionar prestamos'])
                         <a class="nav-link" href="{{ route('prestamo.gestionar_prestamos') }}">
                         <div class="sb-nav-link-icon"><i class="fas fa-book"></i></div>
                             Gestionar Prestamos
                         </a>
-                    @endrole
+                    @endcanany
                     <a class="nav-link collapsed d-none" href="" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                         <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                         Prueba
