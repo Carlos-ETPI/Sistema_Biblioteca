@@ -128,14 +128,14 @@ public function despacharVarios(Request $request)
             
             // Enviar notificación por correo electrónico
             //obtener el correo del usuario asociado al préstamo
-            $correoDestino = DB::table('presta as p')
-                ->join('usuario as usu', 'p.ID_USUARIO', '=', 'usu.ID_USUARIO')
+            $correoDestino = DB::table('PRESTA as p')
+                ->join('USUARIO as usu', 'p.ID_USUARIO', '=', 'usu.ID_USUARIO')
                 ->join('users as u', 'u.ID_USUARIO', '=', 'usu.ID_USUARIO')
                 ->where('p.ID_PRESTA', $ID_PRESTA)
                 ->value('u.email'); 
             //obtener la mora asociada al préstamo
-            $mora = DB::table('presta as p')
-                ->join('costo_presta as cp', 'p.ID_COSTO_PRESTA', '=', 'cp.ID_COSTO_PRESTA')
+            $mora = DB::table('PRESTA as p')
+                ->join('COSTO_PRESTA as cp', 'p.ID_COSTO_PRESTA', '=', 'cp.ID_COSTO_PRESTA')
                 ->where('p.ID_PRESTA', $ID_PRESTA)
                 ->value('cp.MORA_PRESTA');
             $mensaje = 'EL LIBRO HA SIDO DEVUELTO, posees un monto de mora: ' . $mora . ' DOLARES, por favor consulta tu cuenta o hacer caso comiso.';
